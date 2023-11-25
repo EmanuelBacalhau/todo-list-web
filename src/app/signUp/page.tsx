@@ -6,7 +6,7 @@ import { FormSignUp } from '@/components/FormSignUp'
 
 export default function SignUp() {
   return (
-    <main className='flex items-center justify-center h-screen bg-zinc-900'>
+    <main className='flex items-center justify-center min-h-screen bg-zinc-900'>
       <div 
         className='
           border border-gray-100 rounded-lg

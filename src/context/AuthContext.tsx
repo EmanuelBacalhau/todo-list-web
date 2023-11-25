@@ -1,9 +1,10 @@
 'use client'
 
 import { api } from '@/services/api'
-import { setTokenStorage } from '@/storage/token-storage'
+import { setTokenStorage, verifyTokenStorage } from '@/storage/token-storage'
 import { AppError } from '@/utils/app-error'
-import { ReactNode, createContext } from 'react'
+import { useRouter } from 'next/navigation'
+import { ReactNode, createContext, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 
 type SignInProps = {
@@ -31,9 +32,30 @@ type AuthProviderProps = {
 
 export function AuthProvider({ children }: AuthProviderProps) {
 
+  const router = useRouter()
+
+  useEffect(() => {
+    checkAuthentication()    
+  }, [])
+
+  function checkAuthentication() {
+    const {exists, token} = verifyTokenStorage()
+    if (exists)  {
+      updateToken(token)
+      router.push('/dashboard')
+    } else {
+      router.push('/')
+    }
+  }
+
+  function updateToken(token: string) {
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
+  }
+
   async function signIn({email, password}: SignInProps) {
     try {
       const response = await api.post('/auth', {email, password})
+      updateToken(response.data)
       setTokenStorage(response.data)
     } catch (error) {
       const isAppError = error instanceof AppError
