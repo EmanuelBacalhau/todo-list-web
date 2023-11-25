@@ -4,7 +4,7 @@ import { api } from '@/services/api'
 import { setTokenStorage, verifyTokenStorage } from '@/storage/token-storage'
 import { AppError } from '@/utils/app-error'
 import { useRouter } from 'next/navigation'
-import { ReactNode, createContext, useEffect } from 'react'
+import { ReactNode, createContext, useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 
 type SignInProps = {
@@ -19,9 +19,15 @@ type SignUpProps = {
   birthday: Date
 }
 
+type UserData = {
+  name: string
+}
+
 type AuthContextProps = {
   signIn: (data: SignInProps) => Promise<void>
   signUp: (data: SignUpProps) => Promise<void>
+  authenticated: boolean
+  user: UserData
 }
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
@@ -31,32 +37,40 @@ type AuthProviderProps = {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-
   const router = useRouter()
+
+  const [authenticated, setAuthenticated] = useState<boolean>(false)
+  const [user, setUser] = useState<UserData>({} as UserData)
 
   useEffect(() => {
     checkAuthentication()    
   }, [])
 
-  function checkAuthentication() {
-    const {exists, token} = verifyTokenStorage()
-    if (exists)  {
-      updateToken(token)
-      router.push('/dashboard')
-    } else {
-      router.push('/')
+  async function checkAuthentication() {
+    const token = verifyTokenStorage()
+
+    if (!token)  {
+      return router.push('/')
     }
+    
+    api.defaults.headers.common.Authorization = token
+    await getDataUser()
+    setAuthenticated(true)
+    router.push('/dashboard')
   }
 
-  function updateToken(token: string) {
-    api.defaults.headers.common.Authorization = `Bearer ${token}`
+  async function getDataUser() {
+    const response = await api.get('/users')
+    setUser(response.data)
   }
 
   async function signIn({email, password}: SignInProps) {
     try {
       const response = await api.post('/auth', {email, password})
-      updateToken(response.data)
-      setTokenStorage(response.data)
+      api.defaults.headers.common.Authorization = `Bearer ${response.data}`
+      setTokenStorage(`Bearer ${response.data}`)
+      await getDataUser()
+      setAuthenticated(true)
     } catch (error) {
       const isAppError = error instanceof AppError
       const message = isAppError ? error.message : 'Internal server error'
@@ -75,7 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, signUp }}>
+    <AuthContext.Provider value={{ signIn, signUp, authenticated, user }}>
       <ToastContainer
         position='top-right'
         autoClose={2000}

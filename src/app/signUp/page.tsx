@@ -6,7 +6,8 @@ import { FormSignUp } from '@/components/FormSignUp'
 
 export default function SignUp() {
   return (
-    <main className='flex items-center justify-center min-h-screen bg-zinc-900'>
+    <div className='flex items-center justify-center min-h-screen bg-zinc-900'>
+
       <div 
         className='
           border border-gray-100 rounded-lg
@@ -15,6 +16,7 @@ export default function SignUp() {
           p-14
         '
       >
+
         <Image 
           src={logoAuth} 
           alt='logo-auth'
@@ -28,9 +30,9 @@ export default function SignUp() {
           href={'/'}
           className='mt-5 text-gray-100 hover:text-gray-300 transition-colors'
         >
-          Já possui uma conta? Acesse
+          <p>Já possui uma conta? Acesse</p>
         </Link>
       </div>
-    </main>
+    </div>
   )
 }

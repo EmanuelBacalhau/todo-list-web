@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className='flex items-center justify-center h-screen bg-zinc-900'>
+    <div className='flex items-center justify-center h-screen bg-zinc-900'>
       <div 
         className='
           border border-gray-100 rounded-lg
@@ -31,6 +31,6 @@ export default function Home() {
           Não possui uma conta? Registre-se
         </Link>
       </div>
-    </main>
+    </div>
   )
 }

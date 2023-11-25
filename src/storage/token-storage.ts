@@ -7,9 +7,5 @@ export function setTokenStorage(token: string) {
 
 export function verifyTokenStorage() {
   const cookies = parseCookies()
-
-  return {
-    token: cookies[TOKEN],
-    exists: !!cookies[TOKEN]
-  }  
+  return cookies[TOKEN]
 }
