@@ -1,0 +1,1 @@
+export const TOKEN = process.env.NEXT_PUBLIC_JWT_TOKEN as string
