@@ -3,8 +3,6 @@
 import { FormEvent, useState } from "react"
 import { InputAuth } from "./InputAuth"
 import { ButtonAuth } from "./ButtonAuth"
-import { api } from "@/services/api"
-import { setTokenStorage } from "@/storage/token-storage"
 import { useAuth } from "@/hooks/use-auth"
 
 export function FormSignIn () {
@@ -17,7 +15,7 @@ export function FormSignIn () {
     async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
-    signIn({email, password})
+    await signIn({email, password})
     setLoading(false)
   }
 
@@ -32,12 +30,14 @@ export function FormSignIn () {
         placeholder='Email'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
       />
       <InputAuth 
         type='password' 
         placeholder='Password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
       <ButtonAuth 
         title="ENTRAR" 

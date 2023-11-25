@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
-import logoAuth from '../../public/logo-auth.svg'
-import { FormSignIn } from '@/components/FormSignIn'
+import logoAuth from '../../../public/logo-auth.svg'
 import Link from 'next/link'
+import { FormSignUp } from '@/components/FormSignUp'
 
-export default function Home() {
+export default function SignUp() {
   return (
     <main className='flex items-center justify-center h-screen bg-zinc-900'>
       <div 
@@ -22,13 +22,13 @@ export default function Home() {
           className='mb-7'
         />
 
-        <FormSignIn />
+        <FormSignUp />
 
         <Link 
-          href={'signUp'}
+          href={'/'}
           className='mt-5 text-gray-100 hover:text-gray-300 transition-colors'
         >
-          Não possui uma conta? Registre-se
+          Já possui uma conta? Acesse
         </Link>
       </div>
     </main>
