@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { ListOfTask } from "./ListOfTask"
 import { useAuth } from "@/hooks/use-auth"
 import { api } from "@/services/api"
@@ -12,7 +12,11 @@ type ListData = {
   created_at: string
 }
 
-export function ListAllLists() {
+type Props = {
+  setOpenListModal: Dispatch<SetStateAction<ListData | null>>
+}
+
+export function ListAllLists({ setOpenListModal }: Props) {
   const { authenticated } = useAuth()
 
   const [lists, setLists] = useState<ListData[]>([])
@@ -45,6 +49,7 @@ export function ListAllLists() {
               title={list.name} 
               description={list.description}
               created_at={list.created_at}
+              onClick={() => setOpenListModal(list)}
             />
           ))
         }
