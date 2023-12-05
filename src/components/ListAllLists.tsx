@@ -10,6 +10,11 @@ type ListData = {
   name: string
   description: string
   created_at: string
+  tasks: [
+    {
+      status: boolean
+    }
+  ]
 }
 
 type Props = {
@@ -32,6 +37,20 @@ export function ListAllLists({ setOpenListModal }: Props) {
 
     setLists(response.data)
   }
+
+  const allConcludes = lists.reduce((newValue, element) => {
+    const tasks = element.tasks
+    tasks.forEach((element)  => {
+      if (element.status) {
+        newValue = true
+      } else {
+        newValue = false
+      }
+    })
+
+    return newValue
+  }, false)
+
   const listGrid = 'mt-4 px-10 w-full grid gap-3 sm:grid-cols-3 md:grid-cols-4'
 
   return (
@@ -50,6 +69,7 @@ export function ListAllLists({ setOpenListModal }: Props) {
               description={list.description}
               created_at={list.created_at}
               onClick={() => setOpenListModal(list)}
+              allConcludes={allConcludes || lists.length === 0}
             />
           ))
         }

@@ -14,6 +14,11 @@ export type ListData = {
   name: string
   description: string
   created_at: string
+  tasks: [
+    {
+      status: boolean
+    }
+  ]
 }
 
 export type ListDetails = {
@@ -41,6 +46,7 @@ export default function Dashboard() {
     const response = await api.get(`/lists/${openListModal?.id}`)
     setListSelected(response.data)
   }
+
 
   return (
     <div className='min-h-screen bg-zinc-900'>

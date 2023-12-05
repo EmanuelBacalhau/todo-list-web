@@ -71,6 +71,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setTokenStorage(`Bearer ${response.data}`)
       await getDataUser()
       setAuthenticated(true)
+      router.push('/dashboard')
     } catch (error) {
       const isAppError = error instanceof AppError
       const message = isAppError ? error.message : 'Internal server error'

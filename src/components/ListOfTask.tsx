@@ -1,17 +1,19 @@
 'use client'
 
+import { ListDetails } from "@/app/dashboard/page";
 import { api } from "@/services/api";
 import { ClipboardList, Trash2 } from "lucide-react";
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   id: string
   title: string
   description: string
   created_at: string
+  allConcludes: boolean
 }
 
-export function ListOfTask({id, title, description, created_at, ...props}: Props) {
+export function ListOfTask({id, title, description, created_at, allConcludes, ...props}: Props) {
   const date = new Date(created_at)
   const formatDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}` 
 
@@ -20,15 +22,15 @@ export function ListOfTask({id, title, description, created_at, ...props}: Props
   }
   
   return (
-    <div className={`bg-blue-600 p-5 rounded-md w-full hover:bg-blue-700 cursor-pointer`}>
+    <div className={`${allConcludes ? 'bg-green-500': 'bg-blue-600'} p-5 rounded-md w-full`}>
       <div className="w-full flex justify-between items-center">
         <h1 className="font-bold text-gray-900 text-2xl whitespace-nowrap overflow-hidden text-ellipsis">{title}</h1>
         
         <div className="flex gap-2">
-          <button {...props} className="text-gray-900 hover:text-gray-800 transition-colors">
+          <button {...props} className="text-gray-950 hover:text-gray-700 transition-colors">
             <ClipboardList size={23} />
           </button>
-          <button className="text-gray-900 hover:text-red-500 transition-colors" onClick={handleDeleteList}>
+          <button className="text-gray-950 hover:text-gray-700 transition-colors" onClick={handleDeleteList}>
             <Trash2 size={23} />
           </button>
         </div>
@@ -42,7 +44,6 @@ export function ListOfTask({id, title, description, created_at, ...props}: Props
           }
         </p>
       </div>
-
     </div>
   )
 }

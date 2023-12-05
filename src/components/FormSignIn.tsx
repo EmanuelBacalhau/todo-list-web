@@ -15,11 +15,10 @@ export function FormSignIn () {
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    await signIn({email, password})
-    setLoading(false)
-    router.push('/dashboard')
+      e.preventDefault()
+      setLoading(true)
+      await signIn({email, password})
+      setLoading(false)
   }
 
 
