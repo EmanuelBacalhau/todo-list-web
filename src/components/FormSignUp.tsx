@@ -28,7 +28,6 @@ export function FormSignUp () {
     }
     await signUp({name, email, password, birthday: new Date(birthday)})
     setLoading(false)
-    route.push('/')
   }
 
 

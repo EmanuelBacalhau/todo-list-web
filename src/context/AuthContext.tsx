@@ -82,6 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function signUp({name, email, password, birthday}: SignUpProps) {
     try {
       await api.post('/users/register', {email, password, name, birthday})
+      router.push('/')
     } catch (error) {
       const isAppError = error instanceof AppError
       const message = isAppError ? error.message : 'Internal server error'
